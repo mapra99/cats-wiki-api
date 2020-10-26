@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'Breed Search Service', type: :helper do
   describe 'Performing a valid breed search' do
-    before {
+    before do
       query_term = 'be'
       @search = BreedSearchService.new(query_term: query_term)
       @search.perform
-    }
+    end
 
     it 'returns an array of search results' do
       expect(@search.results).to_not be_empty
@@ -14,7 +14,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
     end
 
     it 'saves results' do
-      expect{@search.save}.to change(BreedSearch.count).by(1)
+      expect { @search.save }.to change(BreedSearch.count).by(1)
     end
   end
 
@@ -25,8 +25,8 @@ RSpec.describe 'Breed Search Service', type: :helper do
     end
 
     it 'throws an error' do
-      expect{@search.perform}.to raise_error
-      expect{@searc.results}.to be_empty
+      expect { @search.perform }.to raise_error
+      expect { @searc.results }.to be_empty
     end
   end
 end

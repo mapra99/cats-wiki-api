@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Breeds endpoints', type: :request do
   describe 'GET /search-breed' do
-    before {
+    before do
       get '/search-breed?term=be'
-    }
+    end
 
     it 'should respond with an ok status' do
       payload = JSON.parse(response.body)
