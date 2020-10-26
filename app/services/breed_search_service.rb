@@ -13,4 +13,14 @@ class BreedSearchService
     adapter.get(path: '/breeds/search', params: { q: @query_term })
     @results = adapter.payload
   end
+
+  def save
+    search_record = BreedSearch.new(query_term: @query_term)
+    return unless @results.present? && results.first['id'].present?
+
+    search_record.breed_id = results.first['id']
+    search_record.succeed = true
+
+    search_record.save!
+  end
 end

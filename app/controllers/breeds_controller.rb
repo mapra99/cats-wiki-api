@@ -5,6 +5,7 @@ class BreedsController < ApplicationController
 
     search = BreedSearchService.new(query_term: query_term)
     search.perform
+    search.save
     render json: search.results
   end
 end
