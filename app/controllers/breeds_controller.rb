@@ -8,4 +8,11 @@ class BreedsController < ApplicationController
     search.save_search
     render json: search.results
   end
+
+  def top_searches
+    limit = params[:limit] || 10
+    top_breeds = BreedServices::TopSearchesService.new.perform(limit: limit)
+
+    render json: top_breeds
+  end
 end

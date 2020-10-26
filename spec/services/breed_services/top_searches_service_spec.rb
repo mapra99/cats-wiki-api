@@ -8,7 +8,7 @@ RSpec.describe 'Breed Top Searches Service', type: :helper do
     let!(:successful_searches_four) { create_list(:sucessful_breed_search, 4, breed_id: 'acur') }
     let!(:failed_searches) { create_list(:failed_breed_search, 10, breed_id: 'abob') }
 
-    let!(top_breeds) { BreedServices::TopSearchesService.new.perform(limit: 3) }
+    let!(:top_breeds) { BreedServices::TopSearchesService.new.perform(limit: 3) }
 
     it 'returns an array of top searches' do
       expect(top_breeds).to_not be_empty
