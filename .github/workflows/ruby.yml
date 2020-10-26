@@ -1,7 +1,7 @@
 name: Ruby Workflow
 on: [pull_request]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -43,3 +43,4 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          CATS_API_BASE_URL: "https://api.thecatapi.com/v1"
