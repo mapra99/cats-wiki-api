@@ -43,4 +43,4 @@ jobs:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          CATS_API_BASE_URL: "https://api.thecatapi.com/v1"
+          CATS_API_BASE_URL: https://api.thecatapi.com/v1
