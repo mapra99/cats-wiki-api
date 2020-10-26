@@ -52,7 +52,6 @@ RSpec.configure do |config|
   #   # aliases for `it`, `describe`, and `context` that include `:focus`
   #   # metadata: `fit`, `fdescribe` and `fcontext`, respectively.
   #   config.filter_run_when_matching :focus
-  config.filter_run_excluding :cats_api_key unless ENV['CATS_API_KEY'].present?
   #
   #   # Allows RSpec to persist some state between runs in order to support
   #   # the `--only-failures` and `--next-failure` CLI options. We recommend

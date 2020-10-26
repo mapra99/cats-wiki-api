@@ -10,6 +10,7 @@ class BreedSearchService
     raise ArgumentError unless query_term.present?
 
     adapter = CatsAPIAdapter.new
-    @results = adapter.get(path: '/breeds/search', params: {q: @query_term})
+    adapter.get(path: '/breeds/search', params: { q: @query_term })
+    @results = adapter.payload
   end
 end

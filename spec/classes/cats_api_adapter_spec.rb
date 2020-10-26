@@ -6,7 +6,7 @@ RSpec.describe 'Cats API Adapter', type: :helper do
   end
 
   describe 'request headers' do
-    it 'should contain the api key' do
+    it 'should contain the api key', :cats_api_key do
       headers = @cats_adapter.request_headers
       expect(headers).not_to be_empty
       expect(headers).to have_key('x-api-key')
