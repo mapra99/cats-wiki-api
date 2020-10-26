@@ -10,7 +10,7 @@ class BreedsController < ApplicationController
   end
 
   def top_searches
-    limit = params[:limit] || 10
+    limit = params[:limit].to_i || 10
     top_breeds = BreedServices::TopSearchesService.new.perform(limit: limit)
 
     render json: top_breeds

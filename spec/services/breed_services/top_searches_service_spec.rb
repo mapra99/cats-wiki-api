@@ -5,7 +5,6 @@ RSpec.describe 'Breed Top Searches Service', type: :helper do
     let!(:successful_searches_one) { create_list(:sucessful_breed_search, 5, breed_id: 'abys') }
     let!(:successful_searches_two) { create_list(:sucessful_breed_search, 10, breed_id: 'beng') }
     let!(:successful_searches_three) { create_list(:sucessful_breed_search, 2, breed_id: 'aege') }
-    let!(:successful_searches_four) { create_list(:sucessful_breed_search, 4, breed_id: 'acur') }
     let!(:failed_searches) { create_list(:failed_breed_search, 10, breed_id: 'abob') }
 
     let!(:top_breeds) { BreedServices::TopSearchesService.new.perform(limit: 3) }
@@ -20,7 +19,7 @@ RSpec.describe 'Breed Top Searches Service', type: :helper do
     end
 
     it 'returns the most searched breeds in descending order' do
-      expect(top_breeds.pluck('id')).to eq(%w[beng abys acur])
+      expect(top_breeds.pluck('id')).to eq(%w[beng abys aege])
     end
   end
 end
