@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Breeds endpoints', type: :request do
-  describe 'GET /search-breed' do
+  describe 'GET /search-breed with valid query term' do
     before do
       get '/search-breed?term=be'
     end
@@ -18,6 +18,16 @@ RSpec.describe 'Breeds endpoints', type: :request do
       expect(payload).to be_kind_of(Array)
       expect(payload[0]).to have_key(:id)
       expect(response).to have_http_status(200)
+    end
+  end
+
+  describe 'GET /search-breed with no query term' do
+    before do
+      get '/search-breed?term='
+    end
+
+    it 'should respond with an ok status' do
+      expect(response).to have_http_status(400)
     end
   end
 end
