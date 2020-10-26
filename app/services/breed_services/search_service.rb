@@ -1,6 +1,7 @@
 module BreedServices
   class SearchService
-    attr_accessor :query_term, :results
+    attr_accessor :query_term
+    attr_reader :results
 
     def initialize(query_term: nil)
       @query_term = query_term
