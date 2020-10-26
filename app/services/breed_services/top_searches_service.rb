@@ -5,7 +5,7 @@ module BreedServices
     def initialize; end
 
     def perform(limit: 10)
-      fetch_top_searches limit
+      fetch_top_searches(limit)
       fetch_top_breeds_info
     end
 
