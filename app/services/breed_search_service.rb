@@ -14,7 +14,7 @@ class BreedSearchService
     @results = adapter.payload
   end
 
-  def save
+  def save_search
     search_record = BreedSearch.new(query_term: @query_term)
     return unless @results.present? && results.first['id'].present?
 

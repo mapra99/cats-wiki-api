@@ -14,7 +14,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
     end
 
     it 'saves results' do
-      expect { @search.save }.to change{ BreedSearch.count }.by(1)
+      expect { @search.save_search }.to change{ BreedSearch.count }.by(1)
     end
   end
 
