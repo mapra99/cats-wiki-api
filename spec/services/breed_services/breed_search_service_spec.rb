@@ -4,7 +4,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
   describe 'Performing a valid breed search' do
     before do
       query_term = 'be'
-      @search = BreedSearchService.new(query_term: query_term)
+      @search = BreedServices::SearchService.new(query_term: query_term)
       @search.perform
     end
 
@@ -20,7 +20,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
 
   describe 'Performing a breed search with no query term' do
     before do
-      @search = BreedSearchService.new
+      @search = BreedServices::SearchService.new
     end
 
     it 'throws an error' do

@@ -6,5 +6,9 @@ FactoryBot.define do
       breed_id { 'abys' }
       succeed { true }
     end
+
+    factory :failed_breed_search do
+      succeed { false }
+    end
   end
 end
