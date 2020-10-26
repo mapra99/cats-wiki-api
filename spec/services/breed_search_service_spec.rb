@@ -21,12 +21,11 @@ RSpec.describe 'Breed Search Service', type: :helper do
   describe 'Performing a breed search with no query term' do
     before do
       @search = BreedSearchService.new
-      @search.perform
     end
 
     it 'throws an error' do
       expect { @search.perform }.to raise_error
-      expect { @searc.results }.to be_empty
+      expect(@search.results).to be_empty
     end
   end
 end
