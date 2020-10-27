@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Breeds endpoints', type: :request do
-  describe 'GET /breeds/search with valid query term' do
+  describe 'GET /breeds/search' do
     describe 'with valid query term' do
       before do
         get '/breeds/search?term=be'
@@ -20,6 +20,13 @@ RSpec.describe 'Breeds endpoints', type: :request do
         expect(payload[0]).to have_key('id')
         expect(response).to have_http_status(200)
       end
+
+      it 'should return by default 1 image per search result' do
+        payload = JSON.parse(response.body)
+        expect(payload.pluck('images')).not_to be_empty
+        expect(payload.pluck('images')).to be_kind_of(Array)
+        expect(payload.pluck('images')[0].length).to eq(1)
+      end
     end
 
     describe 'with no query term' do
@@ -27,8 +34,44 @@ RSpec.describe 'Breeds endpoints', type: :request do
         get '/breeds/search?term='
       end
 
-      it 'should respond with an ok status' do
+      it 'should respond with an bad request status' do
         expect(response).to have_http_status(400)
+      end
+    end
+
+    describe 'images in search results' do
+      describe 'specifying the amount of images wanted per result' do
+        before do
+          get '/breeds/search?term=be&include_images=5'
+        end
+  
+        it 'should respond with an ok status' do
+          expect(response).to have_http_status(200)
+        end
+  
+        it 'should return in the payload 5 images per search result' do
+          payload = JSON.parse(response.body)
+          expect(payload.pluck('images')).not_to be_empty
+          expect(payload.pluck('images')).to be_kind_of(Array)
+          expect(payload.pluck('images')[0].length).to eq(5)
+        end
+      end
+
+      describe 'wanting 0 images per result' do
+        before do
+          get '/breeds/search?term=be&include_images=0'
+        end
+
+        it 'should respond with an ok status' do
+          expect(response).to have_http_status(200)
+        end
+
+        it 'should return in the payload 0 images per search result' do
+          payload = JSON.parse(response.body)
+          expect(payload.pluck('images')).not_to be_empty
+          expect(payload.pluck('images')).to be_kind_of(Array)
+          expect(payload.pluck('images')[0].length).to eq(0)
+        end
       end
     end
   end
@@ -50,6 +93,32 @@ RSpec.describe 'Breeds endpoints', type: :request do
       payload = JSON.parse(response.body)
       expect(payload).to be_kind_of(Array)
       expect(payload.pluck('id')).to eq(%w[beng abys aege])
+    end
+
+    it 'should return by default 1 image per top result' do
+      payload = JSON.parse(response.body)
+      expect(payload.pluck("images")).not_to be_empty
+      expect(payload.pluck("images")).to be_kind_of(Array)
+    end
+  end
+
+  describe 'GET /breeds/images' do
+    before do
+      get '/breeds/images?breed_id=beng&images_limit=5'
+    end
+
+    it 'should respond with an ok status' do
+      payload = JSON.parse(response.body)
+      expect(payload).not_to be_empty
+      expect(response).to have_http_status(200)
+    end
+
+    it 'should return an array with the image urls' do
+      payload = JSON.parse(response.body)
+      expect(payload).not_to be_empty
+      expect(payload).to be_kind_of(Array)
+      expect(payload[0]).to be_kind_of(String)
+      expect(response).to have_http_status(200)
     end
   end
 end
