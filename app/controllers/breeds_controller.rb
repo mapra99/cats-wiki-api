@@ -25,6 +25,5 @@ class BreedsController < ApplicationController
     images_search = BreedServices::ImageSearchService.new(breed_id: breed_id, limit: images_limit)
     images_search.perform
     render json: images_search.results
-
   end
 end
