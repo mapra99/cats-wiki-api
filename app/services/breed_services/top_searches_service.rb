@@ -2,17 +2,19 @@ module BreedServices
   class TopSearchesService
     attr_reader :top_breeds
 
-    def initialize; end
+    def initialize limit: 10
+      @limit = limit
+    end
 
-    def perform(limit: 10)
-      fetch_top_searches(limit)
+    def perform
+      fetch_top_searches
       fetch_top_breeds_info
     end
 
     private
 
-    def fetch_top_searches(limit)
-      @top_searches = BreedSearch.top_searches.take(limit)
+    def fetch_top_searches
+      @top_searches = BreedSearch.top_searches.take(@limit)
     end
 
     def fetch_top_breeds_info
