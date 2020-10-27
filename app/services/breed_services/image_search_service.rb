@@ -15,7 +15,10 @@ module BreedServices
     private
 
     def fetch_images
-      params = {limit: @limit}
+      @results = [] and return if @limit.zero?
+
+      params = {}
+      params.merge!(limit: @limit)
       params.merge!(breed_id: @breed_id) if @breed_id.present?
 
       adapter = CatsAPIAdapter.new

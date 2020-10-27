@@ -38,7 +38,7 @@ module BreedServices
       return unless @include_images
       
       @results.map! do |breed|
-        image_search = ImageSearchService.new(breed_id: breed["id"], limit: @include_images)
+        image_search = ImageSearchService.new(breed_id: breed['id'], limit: @include_images)
         image_search.perform
         breed.merge(images: image_search.results)
       end

@@ -3,7 +3,8 @@ class BreedsController < ApplicationController
     query_term = params[:term]
     render status: :bad_request and return unless query_term.present?
 
-    search = BreedServices::SearchService.new(query_term: query_term)
+    images_limit = params[:include_images]&.to_i || 1
+    search = BreedServices::SearchService.new(query_term: query_term, include_images: images_limit)
     search.perform
     search.save_search
     render json: search.results
@@ -11,7 +12,7 @@ class BreedsController < ApplicationController
 
   def top_searches
     limit = params[:limit]&.to_i || 10
-    top_breeds = BreedServices::TopSearchesService.new.perform(limit: limit)
+    top_breeds = BreedServices::TopSearchesService.new(limit: limit).perform
 
     render json: top_breeds
   end
