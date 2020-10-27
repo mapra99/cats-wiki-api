@@ -13,6 +13,10 @@ RSpec.describe 'Breed Search Service', type: :helper do
       expect(@search.results).to be_kind_of(Array)
     end
 
+    it 'returns by default 1 cat image per search result' do
+      expect(@search.results[0]).to have_key(:images)
+    end
+
     it 'saves results' do
       expect { @search.save_search }.to change{ BreedSearch.count }.by(1)
     end
@@ -26,6 +30,21 @@ RSpec.describe 'Breed Search Service', type: :helper do
     it 'throws an error' do
       expect { @search.perform }.to raise_error
       expect(@search.results).to be_empty
+    end
+  end
+
+  describe 'Images involved in a breed search' do
+    before do
+      @search = BreedServices::SearchService.new(query_term: 'be', include_images: 5)
+      @search.perform
+    end
+
+    it 'returns 5 images per search result' do
+      expect(@search.results[0]).to have_key(:images)
+      expect(@search.results.pluck(:images)).not_to be_empty
+      expect(@search.results.pluck(:images)).to be_kind_of(Array)
+      expect(@search.results.pluck(:images)[0]).to be_kind_of(Array)
+      expect(@search.results.pluck(:images)[0][0]).to be_kind_of(String)
     end
   end
 end
