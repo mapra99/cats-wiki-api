@@ -16,4 +16,15 @@ class BreedsController < ApplicationController
 
     render json: top_breeds
   end
+
+  def images
+    breed_id = params[:breed_id]
+    render status: :bad_request and return unless breed_id.present?
+
+    images_limit = params[:images_limit].to_i || 10
+    images_search = BreedServices::ImageSearchService.new(breed_id: breed_id, limit: images_limit)
+    images_search.perform
+    render json: images_search.results
+
+  end
 end
