@@ -85,7 +85,7 @@ Rails.application.configure do
 
   config.middleware.insert_before 0, Rack::Cors do
     allow do
-      origins /^cats-wiki.*\.vercel\.app$/
+      origins /^(https?:\/{2})?cats-wiki-?.*\.vercel\.app\/?$/
       resource '*'
     end
   end
