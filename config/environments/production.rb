@@ -82,4 +82,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      origins /^(https?:\/{2})?cats-wiki-?.*\.vercel\.app\/?$/
+      resource '*'
+    end
+  end
 end
