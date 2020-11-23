@@ -74,6 +74,11 @@ RSpec.describe 'Breeds endpoints', type: :request do
         end
       end
     end
+
+    describe 'searching by name or by id' do
+      xit 'should search by name when passed a query param'
+      xit 'should search by breed id when passed a query param'
+    end
   end
 
   describe 'GET /breeds/top-searches' do
