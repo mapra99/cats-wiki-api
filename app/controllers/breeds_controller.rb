@@ -32,6 +32,6 @@ class BreedsController < ApplicationController
   private
 
   def search_params
-    params.premit(:term, :include_images, :by).allow(by: BreedServices::SearchService.SEARCH_BY_OPTIONS)
+    params.permit(:term, :include_images, :by).allow(by: BreedServices::SearchService::SEARCH_BY_OPTIONS)
   end
 end
