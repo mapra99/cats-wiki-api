@@ -56,7 +56,7 @@ module BreedServices
       adapter = CatsAPIAdapter.new
       adapter.get(path: '/images/search', params: { breed_id: @query_term })
 
-      @results = adapter.payload.first['breeds']
+      @results = adapter.payload.present? ? adapter.payload.first['breeds'] : []
     end
 
     def fetch_image_data
