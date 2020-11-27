@@ -7,14 +7,16 @@ module BreedServices
     end
 
     def perform
-      fetch_top_searches
-      fetch_top_breeds_info
+      Rails.cache.fetch('breeds/top-searches', expires_in: 1.day) do
+        fetch_top_searches
+        fetch_top_breeds_info
+      end.take(@limit)
     end
 
     private
 
     def fetch_top_searches
-      @top_searches = BreedSearch.top_searches.take(@limit)
+      @top_searches = BreedSearch.top_searches
     end
 
     def fetch_top_breeds_info
