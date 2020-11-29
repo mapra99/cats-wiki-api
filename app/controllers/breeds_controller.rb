@@ -10,7 +10,7 @@ class BreedsController < ApplicationController
     search.perform
     search.save_search
     render json: search.results
-    set_cookie_policy
+    set_cache_policy
   end
 
   def top_searches
