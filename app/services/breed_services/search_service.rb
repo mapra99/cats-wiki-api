@@ -79,13 +79,13 @@ module BreedServices
     end
 
     def save_cached
-      return unless passes_cache_criteria?
+      return if !passes_cache_criteria? || @results.blank?
 
       Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}", @results, expires_in: 1.month)
     end
 
     def fetch_cached
-      return unless passes_cache_criteria?
+      return if !passes_cache_criteria?
 
       @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}")
     end
