@@ -13,8 +13,15 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if ENV['REDISCLOUD_URL']
+  config.action_controller.perform_caching = true
+  config.cache_store = :redis_cache_store, { url: ENV['REDISCLOUD_URL'],
+                                             connect_timeout:    30,
+                                             read_timeout:       0.2,
+                                             write_timeout:      0.2,
+                                             reconnect_attempts: 1 }
+  elsif Rails.root.join('tmp', 'caching-dev.txt').exist?
+    # Run rails dev:cache to toggle caching.
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
