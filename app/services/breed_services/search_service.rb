@@ -11,7 +11,6 @@ module BreedServices
     def initialize(query_term: nil, include_images: 1, search_by: SEARCH_BY_OPTIONS.first)
       @query_term = query_term
       @include_images = include_images
-      @results = []
 
       raise ArgumentError unless SEARCH_BY_OPTIONS.include?(search_by)
 

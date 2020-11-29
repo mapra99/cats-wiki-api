@@ -30,7 +30,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
   
       it 'throws an error' do
         expect { @search.perform }.to raise_error
-        expect(@search.results).to be_empty
+        expect(@search.results.blank?).to be true
       end
     end
   
