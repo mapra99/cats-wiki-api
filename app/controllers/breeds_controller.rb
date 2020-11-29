@@ -10,6 +10,7 @@ class BreedsController < ApplicationController
     search.perform
     search.save_search
     render json: search.results
+    set_cookie_policy
   end
 
   def top_searches
@@ -17,6 +18,7 @@ class BreedsController < ApplicationController
     top_breeds = BreedServices::TopSearchesService.new(limit: limit).perform
 
     render json: top_breeds
+    set_cache_policy
   end
 
   def images
@@ -33,5 +35,9 @@ class BreedsController < ApplicationController
 
   def search_params
     params.permit(:term, :include_images, :by).allow(by: BreedServices::SearchService::SEARCH_BY_OPTIONS.map(&:to_s))
+  end
+
+  def set_cache_policy
+    expires_in 1.hour, public: true
   end
 end
