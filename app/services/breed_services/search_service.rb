@@ -19,8 +19,12 @@ module BreedServices
     end
 
     def perform
+      fetch_cached
+      return if @results.present?
+
       fetch_breed_data
       fetch_image_data
+      save_cached
     end
 
     def save_search
@@ -67,6 +71,23 @@ module BreedServices
         image_search.perform
         breed.merge(images: image_search.results)
       end
+    end
+
+    def passes_cache_criteria?
+      @search_by == :breed_name ||
+      @include_images >= 20
+    end
+
+    def save_cached
+      return unless passes_cache_criteria?
+
+      Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}", @results, expires_in: 1.month)
+    end
+
+    def fetch_cached
+      return unless passes_cache_criteria?
+
+      @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}")
     end
   end
 end
