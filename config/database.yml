@@ -21,9 +21,16 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+local_config: &local_config
+  username: <%= ENV.fetch("POSTGRES_USERNAME") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+
 development:
   <<: *default
+  <<: *local_config
   database: cats-wiki-api_development
+  
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -57,6 +64,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  <<: *local_config
   database: cats-wiki-api_test
 
 # As with config/secrets.yml, you never want to store sensitive information,

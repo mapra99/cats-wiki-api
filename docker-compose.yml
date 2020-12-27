@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: .
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: Yx_7z4YZFJ6JtPt
+      DB_HOST: postgres
+      REDISCLOUD_URL: redis://redis:6379
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/app
+      - rails_cache:/usr/app/temp
+      
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: Yx_7z4YZFJ6JtPt
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432
+  redis:
+    image: redis
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
+
+volumes:
+  postgres:
+  rails_cache:
+  redis:
