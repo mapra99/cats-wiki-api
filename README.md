@@ -27,7 +27,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-- Ruby 2.5.7 is required. If you're using rbenv you may need to `rbenv install 2.5.7`
+- Ruby 2.7.2 is required. If you're using rbenv you may need to `rbenv install 2.7.2`
 - Bundler for ruby package management. You may install it with `gem install bundler`
 - PostgreSQL
 - Redis is optional for a development environment.
