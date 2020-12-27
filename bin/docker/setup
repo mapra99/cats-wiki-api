@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "== Building Images =="
+docker-compose build
+
+./bin/docker/start
+
+echo "== Checking dependencies =="
+docker-compose exec backend bundle check
+
+echo "== Initializing databases =="
+docker-compose exec backend rails db:setup db:migrate

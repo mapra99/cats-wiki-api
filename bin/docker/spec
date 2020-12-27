@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "== Running specs =="
+docker-compose exec backend bundle exec rspec spec
+
+echo "== Running guard to watch changes =="
+docker-compose exec backend bundle exec guard
