@@ -238,7 +238,7 @@ PLATFORMS
 
 DEPENDENCIES
   allowable
-  bootsnap (>= 1.1.0)
+  bootsnap (>= 1.4.2)
   byebug
   database_cleaner-active_record
   dotenv-rails
