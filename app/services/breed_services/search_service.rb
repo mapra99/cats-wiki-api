@@ -73,8 +73,7 @@ module BreedServices
     end
 
     def passes_cache_criteria?
-      @search_by == :breed_name ||
-      @images_limit >= 20
+      @images_limit >= 10
     end
 
     def save_cached
