@@ -27,13 +27,15 @@ module BreedServices
     end
 
     def save_search
-      search_record = BreedSearch.new(query_term: @query_term)
-      return unless @results.present? && results.first['id'].present?
+      search_record = BreedSearch.new(query_term: @query_term, search_by: @search_by)
+      search_record.save! and return if results.blank?
 
-      search_record.breed_id = results.first['id']
       search_record.succeed = true
-
       search_record.save!
+
+      results.each do |result|
+        search_record.results.create(breed_id: result['id']) if result['id'].present?
+      end
     end
 
     private
