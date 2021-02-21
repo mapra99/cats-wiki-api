@@ -15,7 +15,7 @@ RSpec.describe BreedSearch, type: :model do
 
     before do
       @top_searches = BreedSearch.top_searches
-      @top_breed_ids = @top_searches.pluck(:breed_id)
+      @top_breed_ids = @top_searches.map(&:breed_id)
     end
 
     it "shouldn't be empty" do

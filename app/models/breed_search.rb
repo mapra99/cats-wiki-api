@@ -3,9 +3,8 @@ class BreedSearch < ApplicationRecord
 
   def self.top_searches
     where(succeed: true)
+      .select(:breed_id, 'count(*) AS count')
       .group(:breed_id)
-      .count
-      .sort_by { |_breed, count| -count }
-      .map { |entry| { breed_id: entry[0], count: entry[1] } }
+      .order('count DESC')
   end
 end
