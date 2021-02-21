@@ -1,6 +1,6 @@
 module BreedServices
   class SearchService
-    attr_accessor :query_term, :include_images
+    attr_accessor :query_term, :images_limit
     attr_reader :results
 
     SEARCH_BY_OPTIONS = %i[
@@ -8,9 +8,9 @@ module BreedServices
       breed_id
     ].freeze
 
-    def initialize(query_term: nil, include_images: 1, search_by: SEARCH_BY_OPTIONS.first)
+    def initialize(query_term: nil, images_limit: 1, search_by: SEARCH_BY_OPTIONS.first)
       @query_term = query_term
-      @include_images = include_images
+      @images_limit = images_limit
 
       raise ArgumentError unless SEARCH_BY_OPTIONS.include?(search_by)
 
@@ -63,10 +63,10 @@ module BreedServices
     end
 
     def fetch_image_data
-      return unless @include_images
+      return unless @images_limit
 
       @results.map! do |breed|
-        image_search = ImageSearchService.new(breed_id: breed['id'], limit: @include_images)
+        image_search = ImageSearchService.new(breed_id: breed['id'], limit: @images_limit)
         image_search.perform
         breed.merge(images: image_search.results)
       end
@@ -74,19 +74,19 @@ module BreedServices
 
     def passes_cache_criteria?
       @search_by == :breed_name ||
-      @include_images >= 20
+      @images_limit >= 20
     end
 
     def save_cached
       return if !passes_cache_criteria? || @results.blank?
 
-      Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}", @results, expires_in: 1.month)
+      Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@images_limit}", @results, expires_in: 1.month)
     end
 
     def fetch_cached
       return if !passes_cache_criteria?
 
-      @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}")
+      @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@images_limit}")
     end
   end
 end

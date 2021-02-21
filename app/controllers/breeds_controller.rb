@@ -12,7 +12,7 @@ class BreedsController < ApplicationController
 
     search = BreedServices::SearchService.new(
       query_term: @query_term,
-      include_images: @images_limit || 1,
+      images_limit: @images_limit || 1,
       search_by: @search_by || :breed_name
     )
     search.perform
@@ -52,7 +52,6 @@ class BreedsController < ApplicationController
   end
 
   def images_limit
-    @images_limit ||= search_params[:include_images]&.to_i
     @images_limit ||= search_params[:images_limit]&.to_i
   end
 

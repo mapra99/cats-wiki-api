@@ -42,7 +42,7 @@ RSpec.describe 'Breeds endpoints', type: :request do
     describe 'images in search results' do
       describe 'specifying the amount of images wanted per result' do
         before do
-          get '/breeds/search?term=be&include_images=5'
+          get '/breeds/search?term=be&images_limit=5'
         end
   
         it 'should respond with an ok status' do
@@ -59,7 +59,7 @@ RSpec.describe 'Breeds endpoints', type: :request do
 
       describe 'wanting 0 images per result' do
         before do
-          get '/breeds/search?term=be&include_images=0'
+          get '/breeds/search?term=be&images_limit=0'
         end
 
         it 'should respond with an ok status' do
