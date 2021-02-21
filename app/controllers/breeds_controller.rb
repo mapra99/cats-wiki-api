@@ -1,5 +1,5 @@
 class BreedsController < ApplicationController
-  after_action :set_cache_policy, only: %i[search top_searches]
+  before_action :set_cache_policy, only: %i[search top_searches]
 
   def search
     query_term = search_params[:term]
@@ -35,9 +35,5 @@ class BreedsController < ApplicationController
 
   def search_params
     params.permit(:term, :include_images, :by).allow(by: BreedServices::SearchService::SEARCH_BY_OPTIONS.map(&:to_s))
-  end
-
-  def set_cache_policy
-    expires_in 1.hour, public: true
   end
 end
