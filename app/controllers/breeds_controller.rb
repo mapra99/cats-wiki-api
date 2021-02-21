@@ -26,7 +26,7 @@ class BreedsController < ApplicationController
       limit: @limit || 10
     ).perform
 
-    render json: top_breeds
+    render json: top_breeds.result
   end
 
   def images
