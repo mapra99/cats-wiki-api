@@ -36,7 +36,7 @@ RSpec.describe 'Breed Search Service', type: :helper do
   
     describe 'Images involved in a breed search' do
       before do
-        @search = BreedServices::SearchService.new(query_term: 'be', include_images: 5)
+        @search = BreedServices::SearchService.new(query_term: 'be', images_limit: 5)
         @search.perform
       end
   

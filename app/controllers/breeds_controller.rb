@@ -1,43 +1,70 @@
 class BreedsController < ApplicationController
+  before_action :set_cache_policy, only: %i[search top_searches]
+
+  before_action :query_term, only: :search
+  before_action :images_limit, only: %i[search images]
+  before_action :search_by, only: :search
+  before_action :limit, only: :top_searches
+  before_action :breed_id, only: :images
+
   def search
-    query_term = search_params[:term]
-    render status: :bad_request and return unless query_term.present?
+    render status: :bad_request and return if @query_term.blank?
 
-    images_limit = search_params[:include_images]&.to_i || 1
-    search_by = search_params[:by]&.to_sym || :breed_name
-
-    search = BreedServices::SearchService.new(query_term: query_term, include_images: images_limit, search_by: search_by)
+    search = BreedServices::SearchService.new(
+      query_term: @query_term,
+      images_limit: @images_limit || 1,
+      search_by: @search_by || :breed_name
+    )
     search.perform
     search.save_search
+
     render json: search.results
-    set_cache_policy
   end
 
   def top_searches
-    limit = params[:limit]&.to_i || 10
-    top_breeds = BreedServices::TopSearchesService.new(limit: limit).perform
+    top_breeds = BreedServices::TopSearchesService.new(
+      limit: @limit || 10
+    )
+    top_breeds.perform
 
-    render json: top_breeds
-    set_cache_policy
+    render json: top_breeds.result
   end
 
   def images
-    breed_id = params[:breed_id]
-    render status: :bad_request and return unless breed_id.present?
+    render status: :bad_request and return if @breed_id.blank?
 
-    images_limit = params[:images_limit].to_i || 10
-    images_search = BreedServices::ImageSearchService.new(breed_id: breed_id, limit: images_limit)
+    images_search = BreedServices::ImageSearchService.new(
+      breed_id: @breed_id,
+      limit: @images_limit || 10
+    )
     images_search.perform
+
     render json: images_search.results
   end
 
   private
 
   def search_params
-    params.permit(:term, :include_images, :by).allow(by: BreedServices::SearchService::SEARCH_BY_OPTIONS.map(&:to_s))
+    params.permit(:term, :limit, :include_images, :images_limit, :breed_id, :by).allow(by: BreedServices::SearchService::SEARCH_BY_OPTIONS.map(&:to_s))
   end
 
-  def set_cache_policy
-    expires_in 1.hour, public: true
+  def query_term
+    @query_term ||= search_params[:term]
+  end
+
+  def images_limit
+    @images_limit ||= search_params[:images_limit]&.to_i
+  end
+
+  def search_by
+    @search_by ||= search_params[:by]&.to_sym
+  end
+
+  def limit
+    @limit ||= search_params[:limit]&.to_i
+  end
+
+  def breed_id
+    @breed_id ||= search_params[:breed_id]
   end
 end

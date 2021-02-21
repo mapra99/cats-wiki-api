@@ -8,14 +8,14 @@ RSpec.describe BreedSearch, type: :model do
   end
 
   describe 'top searches query' do
-    let!(:successful_searches_one) { create_list(:sucessful_breed_search, 5, breed_id: 'abys') }
-    let!(:successful_searches_two) { create_list(:sucessful_breed_search, 10, breed_id: 'beng') }
-    let!(:successful_searches_three) { create_list(:sucessful_breed_search, 2, breed_id: 'aege') }
-    let!(:failed_searches) { create_list(:failed_breed_search, 10, breed_id: 'abob') }
+    let!(:successful_searches_one) { create_list(:breed_search_result, 5, breed_id: 'abys') }
+    let!(:successful_searches_two) { create_list(:breed_search_result, 10, breed_id: 'beng') }
+    let!(:successful_searches_three) { create_list(:breed_search_result, 2, breed_id: 'aege') }
+    let!(:failed_searches) { create_list(:failed_breed_search, 10) }
 
     before do
       @top_searches = BreedSearch.top_searches
-      @top_breed_ids = @top_searches.pluck(:breed_id)
+      @top_breed_ids = @top_searches.map(&:breed_id)
     end
 
     it "shouldn't be empty" do

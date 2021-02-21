@@ -1,6 +1,6 @@
 module BreedServices
   class SearchService
-    attr_accessor :query_term, :include_images
+    attr_accessor :query_term, :images_limit
     attr_reader :results
 
     SEARCH_BY_OPTIONS = %i[
@@ -8,9 +8,9 @@ module BreedServices
       breed_id
     ].freeze
 
-    def initialize(query_term: nil, include_images: 1, search_by: SEARCH_BY_OPTIONS.first)
+    def initialize(query_term: nil, images_limit: 1, search_by: SEARCH_BY_OPTIONS.first)
       @query_term = query_term
-      @include_images = include_images
+      @images_limit = images_limit
 
       raise ArgumentError unless SEARCH_BY_OPTIONS.include?(search_by)
 
@@ -27,13 +27,15 @@ module BreedServices
     end
 
     def save_search
-      search_record = BreedSearch.new(query_term: @query_term)
-      return unless @results.present? && results.first['id'].present?
+      search_record = BreedSearch.new(query_term: @query_term, search_by: @search_by)
+      search_record.save! and return if results.blank?
 
-      search_record.breed_id = results.first['id']
       search_record.succeed = true
-
       search_record.save!
+
+      results.each do |result|
+        search_record.results.create(breed_id: result['id']) if result['id'].present?
+      end
     end
 
     private
@@ -51,42 +53,41 @@ module BreedServices
 
     def fetch_by_name
       adapter = CatsAPIAdapter.new
-      adapter.get(path: '/breeds/search', params: { q: @query_term })
+      adapter.get(path: '/breeds/search', params: { q: @query_term }, cache_payload: true)
       @results = adapter.payload
     end
 
     def fetch_by_id
       adapter = CatsAPIAdapter.new
-      adapter.get(path: '/images/search', params: { breed_id: @query_term })
+      adapter.get(path: '/images/search', params: { breed_id: @query_term }, cache_payload: true)
 
       @results = adapter.payload.present? ? adapter.payload.first['breeds'] : []
     end
 
     def fetch_image_data
-      return unless @include_images
+      return unless @images_limit
 
       @results.map! do |breed|
-        image_search = ImageSearchService.new(breed_id: breed['id'], limit: @include_images)
+        image_search = ImageSearchService.new(breed_id: breed['id'], limit: @images_limit)
         image_search.perform
         breed.merge(images: image_search.results)
       end
     end
 
     def passes_cache_criteria?
-      @search_by == :breed_name ||
-      @include_images >= 20
+      @images_limit >= 10
     end
 
     def save_cached
       return if !passes_cache_criteria? || @results.blank?
 
-      Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}", @results, expires_in: 1.month)
+      Rails.cache.write("breeds/search/#{@search_by}/#{@query_term}/#{@images_limit}", @results, expires_in: 1.month)
     end
 
     def fetch_cached
       return if !passes_cache_criteria?
 
-      @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@include_images}")
+      @results = Rails.cache.read("breeds/search/#{@search_by}/#{@query_term}/#{@images_limit}")
     end
   end
 end
