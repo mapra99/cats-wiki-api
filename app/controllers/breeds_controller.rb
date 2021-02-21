@@ -1,4 +1,6 @@
 class BreedsController < ApplicationController
+  after_action :set_cache_policy, only: %i[search top_searches]
+
   def search
     query_term = search_params[:term]
     render status: :bad_request and return unless query_term.present?
@@ -10,7 +12,6 @@ class BreedsController < ApplicationController
     search.perform
     search.save_search
     render json: search.results
-    set_cache_policy
   end
 
   def top_searches
@@ -18,7 +19,6 @@ class BreedsController < ApplicationController
     top_breeds = BreedServices::TopSearchesService.new(limit: limit).perform
 
     render json: top_breeds
-    set_cache_policy
   end
 
   def images
