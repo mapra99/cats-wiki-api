@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :breed_search do
     query_term { 'ab' }
+    search_by { 'breed_name' }
 
     factory :sucessful_breed_search do
-      breed_id { 'abys' }
       succeed { true }
     end
 
