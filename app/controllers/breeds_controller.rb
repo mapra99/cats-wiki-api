@@ -24,7 +24,8 @@ class BreedsController < ApplicationController
   def top_searches
     top_breeds = BreedServices::TopSearchesService.new(
       limit: @limit || 10
-    ).perform
+    )
+    top_breeds.perform
 
     render json: top_breeds.result
   end

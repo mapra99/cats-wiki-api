@@ -6,6 +6,7 @@ class BreedSearch < ApplicationRecord
 
   def self.top_searches
     where(succeed: true)
+      .joins(:results)
       .select(:breed_id, 'count(*) AS count')
       .group(:breed_id)
       .order('count DESC')
