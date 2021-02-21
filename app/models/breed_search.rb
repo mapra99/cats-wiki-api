@@ -1,5 +1,8 @@
 class BreedSearch < ApplicationRecord
   validates :query_term, presence: true
+  validates :search_by, inclusion: { in: BreedServices::SearchService::SEARCH_BY_OPTIONS }, allow_blank: true
+
+  has_many :results, class_name: 'BreedSearchResult', foreign_key: 'breed_search_id'
 
   def self.top_searches
     where(succeed: true)
