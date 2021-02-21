@@ -1,19 +1,23 @@
 module BreedServices
   class TopSearchesService
-    attr_reader :top_breeds
+    attr_reader :result
 
     def initialize limit: 10
       @limit = limit
     end
 
     def perform
-      Rails.cache.fetch('breeds/top-searches', expires_in: 1.day) do
-        fetch_top_searches
-        fetch_top_breeds_info
-      end.take(@limit)
+      @result = cached_top_searches.take(@limit)
     end
 
     private
+
+    def cached_top_searches
+      Rails.cache.fetch('breeds/top-searches', expires_in: 1.day) do
+        fetch_top_searches
+        fetch_top_breeds_info
+      end
+    end
 
     def fetch_top_searches
       @top_searches = BreedSearch.top_searches
