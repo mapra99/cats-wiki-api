@@ -53,13 +53,13 @@ module BreedServices
 
     def fetch_by_name
       adapter = CatsAPIAdapter.new
-      adapter.get(path: '/breeds/search', params: { q: @query_term })
+      adapter.get(path: '/breeds/search', params: { q: @query_term }, cache_payload: true)
       @results = adapter.payload
     end
 
     def fetch_by_id
       adapter = CatsAPIAdapter.new
-      adapter.get(path: '/images/search', params: { breed_id: @query_term })
+      adapter.get(path: '/images/search', params: { breed_id: @query_term }, cache_payload: true)
 
       @results = adapter.payload.present? ? adapter.payload.first['breeds'] : []
     end
