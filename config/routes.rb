@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   get '/breeds/search', to: 'breeds#search', as: :breed_search
   get '/breeds/top-searches', to: 'breeds#top_searches', as: :breed_top_searches
   get '/breeds/images', to: 'breeds#images', as: :breed_images
+
+  post '/user_clicks', to: 'user_clicks#create'
 end
