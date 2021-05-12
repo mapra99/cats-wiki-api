@@ -34,6 +34,8 @@ gem 'rest-client'
 # Adds functionality to allow or forbid certain content on strong parameters
 gem 'allowable'
 
+gem 'graphql'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
