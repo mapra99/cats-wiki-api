@@ -92,5 +92,10 @@ Rails.application.configure do
       origins /^(https?:\/{2})?cats-wiki-?.*\.vercel\.app\/?$/
       resource '*'
     end
+
+    allow do
+      origins ENV['FRONTEND_HOST']
+      resource '*'
+    end
   end
 end
