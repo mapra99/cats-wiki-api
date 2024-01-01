@@ -13,9 +13,9 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  if ENV['REDISCLOUD_URL']
+  if ENV['REDIS_URL']
   config.action_controller.perform_caching = true
-  config.cache_store = :redis_cache_store, { url: ENV['REDISCLOUD_URL'],
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'],
                                              connect_timeout:    30,
                                              read_timeout:       0.2,
                                              write_timeout:      0.2,

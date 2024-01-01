@@ -24,7 +24,7 @@ jobs:
 
       - name: Bundle install
         run: |
-          gem install bundler
+          gem install bundler -v 2.1.4
           bundle install --jobs 4 --retry 3
 
       - name: Setup Database
@@ -44,3 +44,5 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           CATS_API_BASE_URL: https://api.thecatapi.com/v1
+          CATS_API_KEY: ${{ secrets.CATS_API_KEY }}
+
