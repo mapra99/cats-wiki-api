@@ -44,3 +44,5 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           CATS_API_BASE_URL: https://api.thecatapi.com/v1
+          CATS_API_KEY: ${{ secrets.CATS_API_KEY }}
+
