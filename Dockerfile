@@ -3,6 +3,7 @@ RUN apk add --no-cache build-base
 RUN apk add --no-cache postgresql-dev
 RUN apk add --no-cache tzdata
 RUN apk add --no-cache bash
+RUN apk add --no-cache shared-mime-info
 RUN rm -rf /var/cache/*/*
 RUN echo "" > /root/.ash_history
 
@@ -12,7 +13,7 @@ ENV LC_ALL=en_US.UTF-8
 
 WORKDIR /usr/app
 
-RUN gem install bundler
+RUN gem install bundler -v 2.1.4
 COPY ["Gemfile", "Gemfile.lock", "./"]
 RUN bundle config set --local without 'production'
 RUN bundle install
