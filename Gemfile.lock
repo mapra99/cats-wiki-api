@@ -57,6 +57,8 @@ GEM
       activerecord
       database_cleaner (~> 1.8.0)
     diff-lcs (1.4.4)
+    dockerfile-rails (1.6.1)
+      rails (>= 3.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -237,12 +239,14 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   allowable
   bootsnap (>= 1.4.2)
   byebug
   database_cleaner-active_record
+  dockerfile-rails (>= 1.6)
   dotenv-rails
   factory_bot_rails
   faker (~> 1.9)

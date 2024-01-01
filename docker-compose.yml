@@ -5,7 +5,7 @@ services:
       POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: Yx_7z4YZFJ6JtPt
       DB_HOST: postgres
-      REDISCLOUD_URL: redis://redis:6379
+      REDIS_URL: redis://redis:6379
     depends_on:
       - postgres
       - redis

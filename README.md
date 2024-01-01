@@ -89,9 +89,9 @@ rails db:migrate
 rails dev:cache
 ```
 
-- To use Redis, add a `REDISCLOUD_URL` variable in your `.env` file with the URL where your redis instance is running. Probably something like this:
+- To use Redis, add a `REDIS_URL` variable in your `.env` file with the URL where your redis instance is running. Probably something like this:
 ```
-REDISCLOUD_URL=redis://localhost:6379
+REDIS_URL=redis://localhost:6379
 ```
 
 4. Start the server
